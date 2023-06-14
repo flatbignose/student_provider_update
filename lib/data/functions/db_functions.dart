@@ -5,8 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import '../model/data_model.dart';
 
-
-
 class StudentListProvider extends ChangeNotifier {
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -31,20 +29,18 @@ class StudentListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-List<StudentModel> studentModel = [];
-List<StudentModel> foundUser = [];
+  List<StudentModel> studentModel = [];
+  List<StudentModel> foundUser = [];
 
   void addStudent(StudentModel value) async {
     final mybox = await Hive.openBox<StudentModel>('myBox');
     // ignore: no_leading_underscores_for_local_identifiers
-    await mybox.add(value);
+    if (mybox.name.contains(nameController.text)) await mybox.add(value);
     studentModel.add(value);
+
     getAllStudents();
     notifyListeners();
   }
-
-
-
 
   Future<void> getAllStudents() async {
     final myBox = await Hive.openBox<StudentModel>('myBox');
@@ -68,15 +64,17 @@ List<StudentModel> foundUser = [];
     notifyListeners();
   }
 
-    Future<void> searchResult(String text) async {
+  Future<void> searchResult(String text) async {
     List<StudentModel> result = [];
     if (text.isEmpty) {
       result = studentModel;
     } else {
-      result = studentModel
-          .where((element) =>
-              element.name!.toLowerCase().contains(text.toLowerCase()))
-          .toList();
+      result = studentModel.where(
+        (element) {
+          return element.name!.toLowerCase().contains(text.toLowerCase()) ||
+              element.domain!.toLowerCase().contains(text.toLowerCase());
+        },
+      ).toList();
     }
     foundUser = result;
     notifyListeners();

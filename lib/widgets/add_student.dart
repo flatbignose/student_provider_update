@@ -16,8 +16,8 @@ class AddStudent extends StatefulWidget {
 class _AddStudentState extends State<AddStudent> {
   @override
   Widget build(BuildContext context) {
-    final studentprovider =
-        Provider.of<StudentListProvider>(context, listen: false);
+    // final studentprovider =
+    //     Provider.of<StudentListProvider>(context, listen: false);
     return Consumer<StudentListProvider>(
       builder: (context, providerModel, _) {
         return Scaffold(

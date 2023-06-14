@@ -15,7 +15,7 @@ class ScreenList extends StatelessWidget {
     {
       return Consumer<StudentListProvider>(
         builder: (context, providerModel, _) => Container(
-          height: 500,
+          height: 900,
           padding: const EdgeInsets.all(20),
           color: const Color.fromARGB(255, 220, 248, 198),
           child: ListView.separated(
@@ -43,8 +43,7 @@ class ScreenList extends StatelessWidget {
                     ),
                     SlidableAction(
                       onPressed: (ctx) {
-                        Provider.of<StudentListProvider>(context, listen: false)
-                            .deleteStudent(index);
+                        providerModel.deleteStudent(index);
                       },
                       icon: Icons.delete,
                       backgroundColor: Colors.red.shade300,
